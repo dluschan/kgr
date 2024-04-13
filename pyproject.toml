@@ -1,0 +1,28 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project]
+name = "kgr"
+version = "0.1.6"
+dependencies = [
+  "requests",
+  "geopy",
+  "bs4",
+]
+authors = [
+  {name = "Dmitry Luschan", email = "dluschan@gmail.com"},
+]
+maintainers = [
+  {name = "Dmitry Luschan", email = "dluschan@gmail.com"},
+]
+description = "Miltitool for convert data from https://memopzk.org to Google Maps"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = []
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]

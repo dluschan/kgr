@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "kgr"
-version = "0.1.6"
+version = "0.1.7"
 dependencies = [
   "requests",
   "geopy",
@@ -25,4 +25,10 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",
+  "Topic :: Utilities",
 ]
+
+[project.urls]
+Homepage = "https://github.com/dluschan/kgr"
+Repository = "https://github.com/dluschan/kgr.git"
+Issues = "https://github.com/dluschan/kgr/issues"

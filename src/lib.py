@@ -66,11 +66,11 @@ def translate_city_to_geocode(data: list, args) -> int:
 
 
 def read_data(args):
-	return list(DictReader(open(args.input, newline=''), delimiter=args.delimiter))
+	return list(DictReader(open(args.input, newline='', encoding="UTF-8"), delimiter=args.delimiter))
 
 
 def write_data(data: list, args):
-	with open(args.output, 'w', newline='') as csvfile:
+	with open(args.output, 'w', newline='', encoding="UTF-8") as csvfile:
 		writer = DictWriter(csvfile, fieldnames=data[0].keys())
 		writer.writeheader()
 		for row in data:
@@ -113,7 +113,7 @@ def convert_data_to_kml(data: list, args):
 	for row in data:
 		doc_tag.appendChild(create_placemark(row, args.suffix))
 	root.appendChild(doc_tag)
-	print(root.toprettyxml(), file=open(args.output, "w"))
+	print(root.toprettyxml(), file=open(args.output, "w", encoding="UTF-8"))
 
 
 def create_parser():
@@ -176,7 +176,7 @@ def prepare(args):
 def geocode(args):
 	if args.replace:
 		args.output = args.input
-	args.error = open(args.error, "w") if args.error else stderr
+	args.error = open(args.error, "w", encoding="UTF-8") if args.error else stderr
 	
 	data = read_data(args)
 	assert len(data), "Empty data"

@@ -4,7 +4,7 @@ build-backend = "pdm.backend"
 
 [project]
 name = "kgr"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
   "requests",
   "geopy",

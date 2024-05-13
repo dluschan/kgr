@@ -66,11 +66,11 @@ def translate_city_to_geocode(data: list, args) -> int:
 
 
 def read_data(args):
-	return list(DictReader(open(args.input, newline='', encoding="UTF-8"), delimiter=args.delimiter))
+	return list(DictReader(open(args.input, newline='', encoding=args.encoding), delimiter=args.delimiter))
 
 
 def write_data(data: list, args):
-	with open(args.output, 'w', newline='', encoding="UTF-8") as csvfile:
+	with open(args.output, 'w', newline='', encoding=args.encoding) as csvfile:
 		writer = DictWriter(csvfile, fieldnames=data[0].keys())
 		writer.writeheader()
 		for row in data:
@@ -113,7 +113,7 @@ def convert_data_to_kml(data: list, args):
 	for row in data:
 		doc_tag.appendChild(create_placemark(row, args.suffix))
 	root.appendChild(doc_tag)
-	print(root.toprettyxml(), file=open(args.output, "w", encoding="UTF-8"))
+	print(root.toprettyxml(), file=open(args.output, "w", encoding=args.encoding))
 
 
 def create_parser():
@@ -130,7 +130,8 @@ def create_parser():
 	group.add_argument("-y", "--replace", action="store_true", help="replace input csv file")
 	group.add_argument("-o", "--output", help="output csv file")
 
-	prepare_parser.add_argument("-d", "--delimiter", help="delimiter for input csv file", default=",")
+	prepare_parser.add_argument("-d", "--delimiter", help="delimiter in the input csv file", default=",")
+	prepare_parser.add_argument("-c", "--encoding", help="encoding of the input csv file", default="UTF-8")
 	prepare_parser.add_argument("-v", "--verbosity", action="count", default=0, help="add progress messages")
 
 	group = prepare_parser.add_mutually_exclusive_group()
@@ -145,7 +146,8 @@ def create_parser():
 	group.add_argument("-o", "--output", help="output csv file")
 
 	geocode_parser.add_argument("-r", "--random", action="store_true", help="randomize geocode for exclude collision")
-	geocode_parser.add_argument("-d", "--delimiter", help="delimiter for input csv file", default=",")
+	geocode_parser.add_argument("-d", "--delimiter", help="delimiter in the input csv file", default=",")
+	geocode_parser.add_argument("-c", "--encoding", help="encoding of the input csv file", default="UTF-8")
 	geocode_parser.add_argument("-v", "--verbosity", action="count", default=0, help="add progress messages")
 
 	group = geocode_parser.add_mutually_exclusive_group()
@@ -155,7 +157,8 @@ def create_parser():
 	convert_parser = subparsers.add_parser('convert', description="Convertor data from CSV to KML")
 	convert_parser.add_argument("-i", "--input", required=True, help="input csv file with data")
 	convert_parser.add_argument("-o", "--output", help="output kml file")
-	convert_parser.add_argument("-d", "--delimiter", help="delimiter for input csv file", default=",")
+	convert_parser.add_argument("-d", "--delimiter", help="delimiter in the input csv file", default=",")
+	convert_parser.add_argument("-c", "--encoding", help="encoding of the input csv file", default="UTF-8")
 	convert_parser.add_argument("-s", "--suffix", help="the phrase added to the description of each person")
 	convert_parser.add_argument("-l", "--layout", help="the internal name of the xml document and the name of the layer on the map")
 
@@ -176,7 +179,7 @@ def prepare(args):
 def geocode(args):
 	if args.replace:
 		args.output = args.input
-	args.error = open(args.error, "w", encoding="UTF-8") if args.error else stderr
+	args.error = open(args.error, "w", encoding=args.encoding) if args.error else stderr
 	
 	data = read_data(args)
 	assert len(data), "Empty data"

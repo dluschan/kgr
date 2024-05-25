@@ -9,17 +9,11 @@ def main():
 	subparsers = parser.add_subparsers(dest='command')
 	create_prepare_parser(create_geocode_parser(create_convert_parser(subparsers)))
 	args = parser.parse_args()
-	match args.command:
-		case "check":
-			check(args)
-		case "prepare":
-			prepare(args)
-		case "geocode":
-			geocode(args)
-		case "convert":
-			convert(args)
-		case _:
-			parser.print_help()
+	commands = {"check": check, "prepare": prepare, "geocode": geocode, "convert": convert}
+	if args.command not in commands:
+		parser.print_help()
+	else:
+		commands[args.command](args)
 
 
 main()

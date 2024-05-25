@@ -83,6 +83,6 @@ def geocode(args: Namespace) -> None:
 	errors = translate_city_to_geocode(data, args)
 	if not args.quiet:
 		print(f"Не найдено и пропущено адресов: {errors}.")
-	write_data(data, headings + ["lon", "lat", "WKT"], args)
+	write_data(data, args)
 
 

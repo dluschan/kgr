@@ -22,13 +22,17 @@ def create_placemark(row: dict, src_name: str):
 	name_tag.appendChild(Document().createTextNode(row["ФИО"]))
 	placemark_tag.appendChild(name_tag)
 
-	img_tag = Document().createElement("img")
-	img_tag.setAttribute("src", row["img_src"])
-	img_tag.setAttribute("alt", f"""Фотография: {row["ФИО"]}""")
 	p_tag = Document().createElement("p")
 	p_tag.appendChild(Document().createTextNode(row["description"] + src_name))
 	description_tag = Document().createElement("description")
-	description_tag.appendChild(Document().createCDATASection(img_tag.toprettyxml() + p_tag.toprettyxml()))
+	if "img_src" in row and row["img_src"]:
+		img_tag = Document().createElement("img")
+		img_tag.setAttribute("src", row["img_src"])
+		img_tag.setAttribute("alt", f"""Фотография: {row["ФИО"]}""")
+		description_tag.appendChild(Document().createCDATASection(img_tag.toprettyxml() + p_tag.toprettyxml()))
+	else:
+		description_tag.appendChild(Document().createCDATASection(p_tag.toprettyxml()))
+
 	placemark_tag.appendChild(description_tag)
 
 	point_tag = Document().createElement("Point")
@@ -57,7 +61,7 @@ def convert_data_to_kml(data: list, layout: str, suffix: str) -> Document:
 def convert(args: Namespace) -> None:
 	"""Convert a datafile from CSV to KML format.
 	
-	The source file must contain columns "ФИО", "description", img_src", "lon", and "lat"."""
+	The source file must contain columns "ФИО", "description", "lon", and "lat"."""
 	if args.output is None:
 		args.output = args.input.with_suffix(".kml")
 	if args.suffix is None:
@@ -68,7 +72,7 @@ def convert(args: Namespace) -> None:
 		args.layout = args.input.stem
 	
 	data = read_data(args)
-	if not data or not check_columns(data[0].keys(), "ФИО", "img_src", "description", "lon", "lat"):
+	if not data or not check_columns(data[0].keys(), "ФИО", "description", "lon", "lat"):
 		return
 	print(convert_data_to_kml(data, args.layout, args.suffix).toprettyxml(), file=open(args.output, "w", encoding=args.encoding))
 

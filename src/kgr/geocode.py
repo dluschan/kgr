@@ -1,5 +1,6 @@
 from argparse import Namespace
 from random import uniform
+from functools import cache
 from sys import stderr
 from pathlib import Path
 from geopy.geocoders import Nominatim
@@ -29,6 +30,7 @@ def create_parser(subparsers):
 	return subparsers
 
 
+@cache
 def get_geocode(city: str, app) -> str:
 	location = app.geocode(city)
 	assert location, city
